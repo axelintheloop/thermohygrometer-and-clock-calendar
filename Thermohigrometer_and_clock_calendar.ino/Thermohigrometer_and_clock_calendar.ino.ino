@@ -5,18 +5,25 @@
 #include <Wire.h>
 #include <TimeLib.h>
 #include <DS1307RTC.h>
+#include <RTCDue.h>
 
 //Sensor definitions
 #define DHTPIN 2  
 #define DHTTYPE DHT11   // DHT 11
 
+RTCDue rtc(XTAL);
+
+
 Genie genie;
 DHT dht(DHTPIN, DHTTYPE);
 
-#define RT_enable 0
-
 
 char *_weekday[7] = {"Saturday","Sunday","Monday","Tuesday", "Wednesday","Thursday","Friday"};
+
+char *Month_table[] = {"January", "February", "March",
+                          "April", "May", "June", "July", "August",
+                          "September", "October", "November", "December",
+                          "Undecimber", "Duodecimber"};
 
 char *zellersAlgorithm(int _day, int _month, int _year){
    int mon;
@@ -33,7 +40,19 @@ char *zellersAlgorithm(int _day, int _month, int _year){
    return _weekday[w];
 }
 
+int flag_day = 0;
+int flag_hour = 0;
+int RTC_flag = 0;
+
 #define RESETLINE 4  // Change this if you are not using an Arduino Adaptor Shield Version 2 (see code below)
+
+int seconds = 0;
+int minutes = 0;
+int hours = 0;
+int days = 0;
+int months = 0;
+int years = 0;
+    
 void setup()
 {
     // Use a Serial Begin and serial port of your choice in your code and use the 
@@ -44,9 +63,7 @@ void setup()
     //Serial.begin(9600);
     Serial2.begin(9600);
     genie.Begin(Serial2);   // Use Serial0 for talking to the Genie Library, and to the 4D Systems display
-  
-    dht.begin();
-  
+
     genie.AttachEventHandler(myGenieEventHandler); // Attach the user function Event Handler for processing events
   
     // Reset the Display (change D4 to D2 if you have original 4D Arduino Adaptor)
@@ -66,11 +83,83 @@ void setup()
     // Most Displays use 0-15 for Brightness Control, where 0 = Display OFF, though to 15 = Max Brightness ON.
     // Some displays are more basic, 1 (or higher) = Display ON, 0 = Display OFF.  
     genie.WriteContrast(12); // About 2/3 Max Brightness
+    
+    dht.begin();
+
+    rtc.begin(); // initialize RTC
+
+    tmElements_t tm;
+    if( RTC.read(tm))
+    {
+        genie.WriteObject(GENIE_OBJ_LED, 0, 1);
+        RTC_flag = 1;
+        seconds = tm.Second;
+        minutes = tm.Minute;
+        hours = tm.Hour;
+        days = tm.Day;
+        months = tm.Month;
+        years = tmYearToCalendar(tm.Year); 
+        flag_day = tm.Day;
+        flag_hour = tm.Hour;
+    }
+    else
+    {
+      genie.WriteObject(GENIE_OBJ_LED, 0, 0);
+      rtc.setHours(19);
+      rtc.setMinutes(0);
+      rtc.setSeconds(0);
+
+      flag_day = 30;
+      flag_hour = 19;
+      rtc.setDay(30);
+      rtc.setMonth(12);
+      rtc.setYear(2021);
+
+      hours = rtc.getHours();
+      minutes = rtc.getMinutes();
+      seconds = rtc.getSeconds();
+      days = rtc.getDay();
+      months = rtc.getMonth();
+      years = rtc.getYear();
+      RTC_flag == 0;
+    }
+
+    //Write time in hours
+      if(RTC_flag == 1)
+      {
+        if(hours < 12 && hours >= 5)
+        {
+          genie.WriteStr( 4, "Buenos dias \nAxelintheloop!");
+        }else if(hours < 20 && hours >= 12)
+        {
+          genie.WriteStr( 4, "Buenas tardes \nAxelintheloop!");
+        }else{
+          genie.WriteStr( 4, "Buenas noches \nAxelintheloop!");
+        }
+      }
+      else{
+        if(hours < 12 && hours >= 5)
+        {
+          genie.WriteStr( 4, "Buenos dias \nAxelintheloop");
+        }else if(hours < 20 && hours >= 12)
+        {
+          genie.WriteStr( 4, "Buenas tardes \nAxelintheloop");
+        }else{
+          genie.WriteStr( 4, "Buenas noches \nAxelintheloop");
+        }
+      }
+
+      //Write weekday
+      genie.WriteStr(0, zellersAlgorithm(days, months, years));
   
-    //Write a string to the Display to show the version of the library used
-    //genie.WriteStr(0, GENIE_VERSION);
-    //delay(1000);
-    //genie.WriteStr(0, "Hello world");
+      //Write time in days
+      genie.WriteStr( 1, days);
+  
+      //Write time in months
+      genie.WriteStr( 2, Month_table[months - 1]);
+  
+      //Write time in years
+      genie.WriteStr( 3, years);
   
     #define string_thermoCelcius1   0
     #define string_thermoFarenheit1 1
@@ -90,47 +179,23 @@ void setup()
     #define GENIE_OBJ_USER_LED      19
   
     genie.WriteObject(GENIE_OBJ_GAUGE, 0, 60);
-    /*//genie.WriteStr(0, "Hello world");
-    genie.WriteStr( 0, "Ayer");
-    genie.WriteStr( 1, 99);
-    genie.WriteStr( 2, "December");
-    genie.WriteStr( 3, 3000);
-    genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, 12);
-    genie.WriteObject(GENIE_OBJ_LED_DIGITS, 4, 34);*/
+
 }
 
 void loop()
 {
-  static long waitPeriod = millis();
-  static int gaugeAddVal = 1; // Simulation code variable. Value to change the gauge by each loop
-  static int gaugeVal = 50; // Simulation code variable. Value to start the gauge at when powered on
-
-  char *Month_table[] = {"January", "February", "March",
-                          "April", "May", "June", "July", "August",
-                          "September", "October", "November", "December",
-                          "Undecimber", "Duodecimber"};
-
-                      
-
-  if (millis() >= waitPeriod)
-  {
     float h = dht.readHumidity();
     float t = dht.readTemperature();
+
     float f = dht.readTemperature(true);
+ 
     float f_meter = 0;
     float t_meter = 0;
     float f_dig = 0;
     float t_dig = 0;
 
-    int seconds = 0;
-    int minutes = 0;
-    int hours = 0;
-    int days = 0;
-    int months = 0;
-    int years = 0;
-
-    
     t_meter = map(t, -20, 50, 0, 70);
+    
     if(t < 0)
     {
       t_dig = abs(t);
@@ -142,6 +207,7 @@ void loop()
     }
 
     f_meter = map(f, -10, 90, 0, 100);
+    
     if(f < 0)
     {
       f_dig = abs(f);
@@ -153,38 +219,29 @@ void loop()
     }
 
     tmElements_t tm;
-    if( RTC.chipPresent() )
+    if( RTC.read(tm))
     {
-        RTC.read(tm);
+        genie.WriteObject(GENIE_OBJ_LED, 0, 1);
+        RTC_flag = 1;
         seconds = tm.Second;
         minutes = tm.Minute;
         hours = tm.Hour;
         days = tm.Day;
         months = tm.Month;
-        years = tmYearToCalendar(tm.Year); 
-
-        if(hours < 12 && hours >= 5)
-        {
-          genie.WriteStr( 4, "Buenos dias \nAxelintheloop");
-        }else if(hours < 20 && hours >= 12)
-        {
-          genie.WriteStr( 4, "Buenas tardes \nAxelintheloop");
-        }else{
-          genie.WriteStr( 4, "Buenas noches \nAxelintheloop");
-        }
+        years = tmYearToCalendar(tm.Year);
     }
     else
     {
-        seconds = 60;
-        minutes = 99;
-        hours = 99;
-        days = 99;
-        months = 13;
-        years = 9999;
-        genie.WriteStr( 4, "No hay RTC module \nAxelintheloop");
+      genie.WriteObject(GENIE_OBJ_LED, 0, 0);
+      RTC_flag = 0;
+      hours = rtc.getHours();
+      minutes = rtc.getMinutes();
+      seconds = rtc.getSeconds();
+      days = rtc.getDay();
+      months = rtc.getMonth();
+      years = rtc.getYear();
     }
    
-
     //Write humidity
     genie.WriteObject(GENIE_OBJ_LED_DIGITS, 0, h);
     genie.WriteObject(GENIE_OBJ_ANGULAR_METER , 0, h);
@@ -198,22 +255,56 @@ void loop()
     genie.WriteObject(GENIE_OBJ_THERMOMETER, 1, f_meter);
 
     //Write time in minutes
-    genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, hours);
-
-    //Write time in hours
     genie.WriteObject(GENIE_OBJ_LED_DIGITS, 4, minutes);
 
-    //Write weekday
-    genie.WriteStr(0, zellersAlgorithm(days, months, years));
+  
+    if(flag_hour == hours) 
+    {
+      //Write time in hours
+      genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, hours);
 
-    //Write time in days
-    genie.WriteStr( 1, days);
+      if(RTC_flag == 1)
+      {
+        if(hours < 12 && hours >= 5)
+        {
+          genie.WriteStr( 4, "Buenos dias \nAxelintheloop!");
+        }else if(hours < 20 && hours >= 12)
+        {
+          genie.WriteStr( 4, "Buenas tardes \nAxelintheloop!");
+        }else{
+          genie.WriteStr( 4, "Buenas noches \nAxelintheloop!");
+        }
+      }
+      else{
+        if(hours < 12 && hours >= 5)
+        {
+          genie.WriteStr( 4, "Buenos dias \nAxelintheloop");
+        }else if(hours < 20 && hours >= 12)
+        {
+          genie.WriteStr( 4, "Buenas tardes \nAxelintheloop");
+        }else{
+          genie.WriteStr( 4, "Buenas noches \nAxelintheloop");
+        }
+      }
+      flag_hour++;
+    }
 
-    //Write time in months
-    genie.WriteStr( 2, Month_table[months - 1]);
+    if(flag_day == days)
+    {
+      //Write weekday
+      genie.WriteStr(0, zellersAlgorithm(days, months, years));
+  
+      //Write time in days
+      genie.WriteStr( 1, days);
+  
+      //Write time in months
+      genie.WriteStr( 2, Month_table[months - 1]);
+  
+      //Write time in years
+      genie.WriteStr( 3, years);
 
-    //Write time in years
-    genie.WriteStr( 3, years);
+      flag_day++;
+    }
 
     //Write time in seconds
     genie.WriteObject(GENIE_OBJ_GAUGE, 0, seconds);
@@ -221,10 +312,6 @@ void loop()
     //Write time in seconds
     genie.WriteObject(GENIE_OBJ_LED_DIGITS, 5, seconds);
 
-
-    waitPeriod = millis() + 50; // rerun this code to update Cool Gauge and Slider in another 50ms time.
-    
-  }
 }
 
 void myGenieEventHandler(void)
