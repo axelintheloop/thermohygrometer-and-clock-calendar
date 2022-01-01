@@ -105,7 +105,7 @@ StaticText
     Font.Style                   []
     Height                       32
     Left                         420
-    Top                          331
+    Top                          328
     Transparent                  Yes
     Width                        30
     WordWrap                     Yes
@@ -156,54 +156,6 @@ Circle
     Rad                          8
     X                            232
     Y                            90
-end
-WinButton
-    Name                         Winbutton0
-    Alias                        Winbutton0
-    Appearance.Alignment         Center
-    Appearance.Layout            Left
-    Appearance.PictureAlignment  Right
-    Appearance.SimpleLayout      No
-    Appearance.Spacing           3
-    AutoSizeToPicture            No
-    Bevel                        Yes
-    BevelColor                   clWhite
-    Caption                      S1
-    Color                        0xF20FF1
-    Font.Color                   clWindowText
-    Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    12
-    Font.Style                   []
-    Height                       27
-    Left                         730
-    Matrix                       -1
-    Momentary                    Yes
-    Picture                      (None)
-    StatusWhenOff.BGcolor        RED
-    StatusWhenOff.Caption        ''
-    StatusWhenOff.Glow           Yes
-    StatusWhenOff.Color          WHITE
-    StatusWhenOff.Effects        []
-    StatusWhenOff.Name           Tahoma
-    StatusWhenOff.Size           8
-    StatusWhenOff.Style          []
-    StatusWhenOff.Visible        Yes
-    StatusWhenOn.BGcolor         RED
-    StatusWhenOn.Caption         ''
-    StatusWhenOn.Glow            Yes
-    StatusWhenOn.Color           WHITE
-    StatusWhenOn.Effects         []
-    StatusWhenOn.Name            Tahoma
-    StatusWhenOn.Size            8
-    StatusWhenOn.Style           []
-    StatusWhenOn.Visible         Yes
-    Top                          453
-    Width                        70
-    OnChanged                    Form1Activate
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
 end
 LedDigits
     Name                         Leddigits1
@@ -360,10 +312,10 @@ Strings
     Font.Strikethrough           No
     Font.Underline               No
     Left                         7
-    Strings                      Viernes
+    Strings                      Neptunday\n
     StringsStyle                 Message
-    Top                          411
-    Width                        182
+    Top                          410
+    Width                        260
     OnChanged                    ''
 end
 Strings
@@ -381,10 +333,10 @@ Strings
     Font.Size                    56
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         200
-    Strings                      95\n
+    Left                         272
+    Strings                      00\n
     StringsStyle                 Message
-    Top                          413
+    Top                          410
     Width                        62
     OnChanged                    ''
 end
@@ -403,11 +355,11 @@ Strings
     Font.Size                    60
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         272
-    Strings                      Diciembre\n
+    Left                         337
+    Strings                      Undecimber\n
     StringsStyle                 Message
-    Top                          408
-    Width                        265
+    Top                          410
+    Width                        288
     OnChanged                    ''
 end
 LedDigits
@@ -444,8 +396,8 @@ Strings
     Font.Size                    56
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         552
-    Strings                      9999
+    Left                         629
+    Strings                      0000\n
     StringsStyle                 Message
     Top                          412
     Width                        115
@@ -615,7 +567,7 @@ StaticText
     Font.Style                   []
     Height                       32
     Left                         633
-    Top                          331
+    Top                          328
     Transparent                  Yes
     Width                        30
     WordWrap                     Yes
@@ -644,7 +596,7 @@ Strings
     Alias                        Strings4
     Alignment                    Left
     BGcolor                      BLACK
-    Height                       58
+    Height                       71
     FGcolor                      WHITE
     Font.Bold                    No
     Font.CharSet                 ANSI
@@ -654,11 +606,11 @@ Strings
     Font.Size                    22
     Font.Strikethrough           No
     Font.Underline               No
-    Left                         616
+    Left                         576
     Strings                      'Buenas noches Axelintheloop'
     StringsStyle                 Message
-    Top                          240
-    Width                        130
+    Top                          192
+    Width                        165
     OnChanged                    ''
 end
 Strings
@@ -688,1130 +640,47 @@ UserButton
     Alias                        Userbutton0
     Height                       35
     Images                       'mexico flag.png\nmexico flag.png'
-    Left                         692
+    Left                         600
     Matrix                       0
     Momentary                    No
     Stretch                      No
-    Top                          352
+    Top                          276
     Width                        60
-    OnChanged                    'Report Message'
+    OnChanged                    ''
 end
-Form
-    Name                         Form1
-    Alias                        Form1
-    Bgtype                       Color
-    Color                        BLACK
-    Image                        (None)
-    Source.Height                0
-    Source.Left                  0
-    Source.Top                   0
-    Source.Width                 0
-    OnActivate                   ''
-    OnCreate                     ''
-    OnRepeat                     ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
+UserButton
+    Name                         Userbutton1
+    Alias                        Userbutton1
+    Height                       68
+    Images                       'clock icon.png\nclock icon.png\nclock icon.png'
+    Left                         696
+    Matrix                       0
+    Momentary                    No
+    Stretch                      No
+    Top                          328
+    Width                        68
+    OnChanged                    ''
 end
-StaticText
-    Name                         Statictext3
-    Alias                        Statictext3
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      'HUMEDAD / HUMIDITY'
+Led
+    Name                         Led0
+    Alias                        Led0
+    Active                       No
+    Caption                      'RT Clock'
     Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Terminal
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       36
-    Left                         141
-    Top                          23
-    Transparent                  Yes
-    Width                        202
-    WordWrap                     Yes
-end
-StaticText
-    Name                         Statictext4
-    Alias                        Statictext4
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      TEMPERATURA
-    Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Terminal
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       18
-    Left                         456
-    Top                          16
-    Transparent                  Yes
-    Width                        122
-    WordWrap                     Yes
-end
-StaticText
-    Name                         Statictext5
-    Alias                        Statictext5
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      TEMPERATURE
-    Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Terminal
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       18
-    Left                         652
-    Top                          20
-    Transparent                  Yes
-    Width                        122
-    WordWrap                     Yes
-end
-Thermometer
-    Name                         Thermometer2
-    Alias                        Thermometer2
-    Caption                      Thermometer4
-    Color                        BLACK
-    ColorAfter                   0x000049
-    ColorBefore                  0x0A92F6
-    Direction                    Vertical
-    Font.Color                   0xFFED09
+    Font.Color                   clWhite
     Font.Effects                 []
     Font.Name                    Arial
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       407
-    Left                         614
-    Scale.Color                  clWhite
-    Scale.Decimals               0
-    Scale.Heightmax              14
-    Scale.Heightmin              8
-    Scale.Max                    90
-    Scale.Min                    -10
-    Scale.Offset                 50
-    Scale.Position               After
-    Scale.ScaleType              Linear
-    Scale.SmallStep              4
-    Scale.Step                   10
-    Scale.Visible                Yes
-    Setpoint.Bitmap              (None)
-    Setpoint.Color               0x1CECE2
-    Setpoint.Shape               Triangle
-    Setpoint.Value               70
-    Setpoint.Visible             Yes
-    ShowCaption                  No
-    Top                          43
-    Value.Bitmap                 (None)
-    Value.Color                  clAqua
-    Value.Shape                  Triangle
-    Value.Value                  0
-    Value.Visible                Yes
-    Width                        194
-    OnChanged                    ''
-end
-Thermometer
-    Name                         Thermometer3
-    Alias                        Thermometer3
-    Caption                      Thermometer5
-    Color                        BLACK
-    ColorAfter                   0x000044
-    ColorBefore                  clRed
-    Direction                    Vertical
-    Font.Color                   0xFFED09
-    Font.Effects                 []
-    Font.Name                    Arial
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       408
-    Left                         416
-    Scale.Color                  clWhite
-    Scale.Decimals               0
-    Scale.Heightmax              14
-    Scale.Heightmin              8
-    Scale.Max                    50
-    Scale.Min                    -20
-    Scale.Offset                 50
-    Scale.Position               After
-    Scale.ScaleType              Linear
-    Scale.SmallStep              1
-    Scale.Step                   10
-    Scale.Visible                Yes
-    Setpoint.Bitmap              (None)
-    Setpoint.Color               0x1CECE2
-    Setpoint.Shape               Triangle
-    Setpoint.Value               70
-    Setpoint.Visible             Yes
-    ShowCaption                  No
-    Top                          46
-    Value.Bitmap                 (None)
-    Value.Color                  clAqua
-    Value.Shape                  Triangle
-    Value.Value                  0
-    Value.Visible                Yes
-    Width                        194
-    OnChanged                    ''
-end
-AngularMeter
-    Name                         Angularmeter1
-    Alias                        Angularmeter1
-    Angle                        40
-    AngleOffset                  280
-    Caption                      Angularmeter2
-    CaptionXOffset               0
-    CaptionYOffset               0
-    CenterDotColor               BLACK
-    CenterDotWidth               2
-    Color                        BLACK
-    ColorZone1                   clRed
-    ColorZone2                   GREEN
-    ColorZone3                   clBlue
-    Decimals                     0
-    Font.Color                   clWhite
-    Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    8
+    Font.Size                    10
     Font.Style                   []
-    Height                       349
-    Labels                       10
-    LabelsFont.Color             clWhite
-    LabelsFont.Effects           []
-    LabelsFont.Name              Tahoma
-    LabelsFont.Size              8
-    LabelsFont.Style             []
-    LabelsOffset                 30
-    Left                         20
-    Maxvalue                     100
-    Minvalue                     0
-    NeedleBasewidth              8
-    NeedleColor                  clRed
-    NeedleLength                 -1
-    Percent1                     40
-    Percent2                     20
-    Radius                       -1
-    Spacing                      45
-    Ticks                        100
-    TicksColor                   clWhite
-    TicksEnlarge                 10
-    TicksMax                     14
-    TicksMin                     5
-    Top                          40
-    Width                        436
+    Glyphs                       (None)
+    Height                       37
+    Layout                       Right
+    LedType                      Rounded
+    Left                         692
+    Palette.High                 clRed
+    Palette.Low                  0x000051
+    Spacing                      5
+    Top                          268
+    Width                        89
     OnChanged                    ''
-end
-WinButton
-    Name                         Winbutton1
-    Alias                        Winbutton1
-    Appearance.Alignment         Center
-    Appearance.Layout            Left
-    Appearance.PictureAlignment  Right
-    Appearance.SimpleLayout      No
-    Appearance.Spacing           3
-    AutoSizeToPicture            No
-    Bevel                        Yes
-    BevelColor                   clWhite
-    Caption                      S2
-    Color                        0xF20FF1
-    Font.Color                   clWindowText
-    Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    12
-    Font.Style                   []
-    Height                       55
-    Left                         32
-    Matrix                       -1
-    Momentary                    Yes
-    Picture                      (None)
-    StatusWhenOff.BGcolor        RED
-    StatusWhenOff.Caption        ''
-    StatusWhenOff.Glow           Yes
-    StatusWhenOff.Color          WHITE
-    StatusWhenOff.Effects        []
-    StatusWhenOff.Name           Tahoma
-    StatusWhenOff.Size           8
-    StatusWhenOff.Style          []
-    StatusWhenOff.Visible        Yes
-    StatusWhenOn.BGcolor         RED
-    StatusWhenOn.Caption         ''
-    StatusWhenOn.Glow            Yes
-    StatusWhenOn.Color           WHITE
-    StatusWhenOn.Effects         []
-    StatusWhenOn.Name            Tahoma
-    StatusWhenOn.Size            8
-    StatusWhenOn.Style           []
-    StatusWhenOn.Visible         Yes
-    Top                          400
-    Width                        66
-    OnChanged                    Form2Activate
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-LedDigits
-    Name                         Leddigits6
-    Alias                        Leddigits6
-    Color                        BLACK
-    Decimals                     1
-    Digits                       3
-    Height                       75
-    LeadingZero                  Yes
-    Left                         150
-    OutlineColor                 BLACK
-    Palette.High                 'Office 2007 (Luna)'
-    Palette.Low                  0x420000
-    Top                          388
-    Width                        177
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-Circle
-    Name                         Circle3
-    Alias                        Circle3
-    Color                        'Office 2007 (Luna)'
-    Filled                       No
-    Rad                          8
-    X                            372
-    Y                            440
-end
-Line
-    Name                         Line2
-    Alias                        Line2
-    Color                        'Office 2007 (Luna)'
-    Pattern                      Solid
-    X1                           342
-    X2                           380
-    Y1                           453
-    Y2                           402
-end
-Strings
-    Name                         Strings6
-    Alias                        Strings6
-    Alignment                    Left
-    BGcolor                      BLACK
-    Height                       26
-    FGcolor                      clRed
-    Font.Bold                    No
-    Font.CharSet                 ANSI
-    Font.Italic                  No
-    Font.Name                    '4D Font3 (8x12)'
-    Font.Opaque                  Yes
-    Font.Size                    12
-    Font.Strikethrough           No
-    Font.Underline               No
-    Left                         492
-    Strings                      99.99
-    StringsStyle                 Message
-    Top                          460
-    Width                        46
-    OnChanged                    ''
-end
-StaticText
-    Name                         Statictext6
-    Alias                        Statictext6
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      °C
-    Color                        0x00000D
-    Font.Color                   clWhite
-    Font.Effects                 []
-    Font.Name                    Consolas
-    Font.Size                    14
-    Font.Style                   []
-    Height                       22
-    Left                         536
-    Top                          454
-    Transparent                  Yes
-    Width                        20
-    WordWrap                     Yes
-end
-Strings
-    Name                         Strings7
-    Alias                        Strings7
-    Alignment                    Left
-    BGcolor                      BLACK
-    Height                       26
-    FGcolor                      clRed
-    Font.Bold                    No
-    Font.CharSet                 ANSI
-    Font.Italic                  No
-    Font.Name                    '4D Font3 (8x12)'
-    Font.Opaque                  Yes
-    Font.Size                    12
-    Font.Strikethrough           No
-    Font.Underline               No
-    Left                         690
-    Strings                      00.00\n
-    StringsStyle                 Message
-    Top                          458
-    Width                        46
-    OnChanged                    ''
-end
-StaticText
-    Name                         Statictext7
-    Alias                        Statictext7
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      °F
-    Color                        0x000200
-    Font.Color                   clWhite
-    Font.Effects                 []
-    Font.Name                    Consolas
-    Font.Size                    14
-    Font.Style                   []
-    Height                       22
-    Left                         736
-    Top                          452
-    Transparent                  Yes
-    Width                        20
-    WordWrap                     Yes
-end
-Form
-    Name                         Form2
-    Alias                        Form2
-    Bgtype                       Color
-    Color                        BLACK
-    Image                        (None)
-    Source.Height                0
-    Source.Left                  0
-    Source.Top                   0
-    Source.Width                 0
-    OnActivate                   ''
-    OnCreate                     ''
-    OnRepeat                     ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-StaticText
-    Name                         Statictext8
-    Alias                        Statictext8
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      TEMPERATURA
-    Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Terminal
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       18
-    Left                         456
-    Top                          20
-    Transparent                  Yes
-    Width                        122
-    WordWrap                     Yes
-end
-Thermometer
-    Name                         Thermometer4
-    Alias                        Thermometer4
-    Caption                      Thermometer2
-    Color                        BLACK
-    ColorAfter                   0x000044
-    ColorBefore                  clRed
-    Direction                    Vertical
-    Font.Color                   0xFFED09
-    Font.Effects                 []
-    Font.Name                    Arial
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       450
-    Left                         416
-    Scale.Color                  clWhite
-    Scale.Decimals               0
-    Scale.Heightmax              14
-    Scale.Heightmin              8
-    Scale.Max                    50
-    Scale.Min                    -20
-    Scale.Offset                 50
-    Scale.Position               After
-    Scale.ScaleType              Linear
-    Scale.SmallStep              1
-    Scale.Step                   10
-    Scale.Visible                Yes
-    Setpoint.Bitmap              (None)
-    Setpoint.Color               0x1CECE2
-    Setpoint.Shape               Triangle
-    Setpoint.Value               70
-    Setpoint.Visible             Yes
-    ShowCaption                  No
-    Top                          0
-    Value.Bitmap                 (None)
-    Value.Color                  clAqua
-    Value.Shape                  Triangle
-    Value.Value                  0
-    Value.Visible                Yes
-    Width                        194
-    OnChanged                    ''
-end
-StaticText
-    Name                         Statictext9
-    Alias                        Statictext9
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      TEMPERATURE
-    Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Terminal
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       18
-    Left                         652
-    Top                          20
-    Transparent                  Yes
-    Width                        122
-    WordWrap                     Yes
-end
-Thermometer
-    Name                         Thermometer5
-    Alias                        Thermometer5
-    Caption                      Thermometer3
-    Color                        BLACK
-    ColorAfter                   0x000049
-    ColorBefore                  0x0A92F6
-    Direction                    Vertical
-    Font.Color                   0xFFED09
-    Font.Effects                 []
-    Font.Name                    Arial
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       448
-    Left                         614
-    Scale.Color                  clWhite
-    Scale.Decimals               0
-    Scale.Heightmax              14
-    Scale.Heightmin              8
-    Scale.Max                    90
-    Scale.Min                    -10
-    Scale.Offset                 50
-    Scale.Position               After
-    Scale.ScaleType              Linear
-    Scale.SmallStep              4
-    Scale.Step                   10
-    Scale.Visible                Yes
-    Setpoint.Bitmap              (None)
-    Setpoint.Color               0x1CECE2
-    Setpoint.Shape               Triangle
-    Setpoint.Value               70
-    Setpoint.Visible             Yes
-    ShowCaption                  No
-    Top                          2
-    Value.Bitmap                 (None)
-    Value.Color                  clAqua
-    Value.Shape                  Triangle
-    Value.Value                  0
-    Value.Visible                Yes
-    Width                        194
-    OnChanged                    ''
-end
-StaticText
-    Name                         Statictext10
-    Alias                        Statictext10
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      'HUMEDAD / HUMIDITY'
-    Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Terminal
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       36
-    Left                         141
-    Top                          23
-    Transparent                  Yes
-    Width                        202
-    WordWrap                     Yes
-end
-AngularMeter
-    Name                         Angularmeter2
-    Alias                        Angularmeter2
-    Angle                        40
-    AngleOffset                  280
-    Caption                      Angularmeter1
-    CaptionXOffset               0
-    CaptionYOffset               0
-    CenterDotColor               BLACK
-    CenterDotWidth               2
-    Color                        BLACK
-    ColorZone1                   clRed
-    ColorZone2                   GREEN
-    ColorZone3                   clBlue
-    Decimals                     0
-    Font.Color                   clWhite
-    Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    8
-    Font.Style                   []
-    Height                       349
-    Labels                       10
-    LabelsFont.Color             clWhite
-    LabelsFont.Effects           []
-    LabelsFont.Name              Tahoma
-    LabelsFont.Size              8
-    LabelsFont.Style             []
-    LabelsOffset                 30
-    Left                         20
-    Maxvalue                     100
-    Minvalue                     0
-    NeedleBasewidth              8
-    NeedleColor                  clRed
-    NeedleLength                 -1
-    Percent1                     40
-    Percent2                     20
-    Radius                       -1
-    Spacing                      45
-    Ticks                        100
-    TicksColor                   clWhite
-    TicksEnlarge                 10
-    TicksMax                     14
-    TicksMin                     5
-    Top                          40
-    Width                        436
-    OnChanged                    ''
-end
-LedDigits
-    Name                         Leddigits7
-    Alias                        Leddigits7
-    Color                        BLACK
-    Decimals                     1
-    Digits                       3
-    Height                       75
-    LeadingZero                  Yes
-    Left                         150
-    OutlineColor                 BLACK
-    Palette.High                 'Office 2007 (Luna)'
-    Palette.Low                  0x420000
-    Top                          388
-    Width                        177
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-WinButton
-    Name                         Winbutton2
-    Alias                        Winbutton2
-    Appearance.Alignment         Center
-    Appearance.Layout            Left
-    Appearance.PictureAlignment  Right
-    Appearance.SimpleLayout      No
-    Appearance.Spacing           3
-    AutoSizeToPicture            No
-    Bevel                        Yes
-    BevelColor                   clWhite
-    Caption                      S3
-    Color                        0xF20FF1
-    Font.Color                   clWindowText
-    Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    12
-    Font.Style                   []
-    Height                       55
-    Left                         32
-    Matrix                       -1
-    Momentary                    Yes
-    Picture                      (None)
-    StatusWhenOff.BGcolor        RED
-    StatusWhenOff.Caption        ''
-    StatusWhenOff.Glow           Yes
-    StatusWhenOff.Color          WHITE
-    StatusWhenOff.Effects        []
-    StatusWhenOff.Name           Tahoma
-    StatusWhenOff.Size           8
-    StatusWhenOff.Style          []
-    StatusWhenOff.Visible        Yes
-    StatusWhenOn.BGcolor         RED
-    StatusWhenOn.Caption         ''
-    StatusWhenOn.Glow            Yes
-    StatusWhenOn.Color           WHITE
-    StatusWhenOn.Effects         []
-    StatusWhenOn.Name            Tahoma
-    StatusWhenOn.Size            8
-    StatusWhenOn.Style           []
-    StatusWhenOn.Visible         Yes
-    Top                          400
-    Width                        66
-    OnChanged                    Form3Activate
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-Line
-    Name                         Line1
-    Alias                        Line1
-    Color                        'Office 2007 (Luna)'
-    Pattern                      Solid
-    X1                           342
-    X2                           380
-    Y1                           453
-    Y2                           402
-end
-Circle
-    Name                         Circle2
-    Alias                        Circle2
-    Color                        'Office 2007 (Luna)'
-    Filled                       No
-    Rad                          8
-    X                            372
-    Y                            440
-end
-Strings
-    Name                         Strings8
-    Alias                        Strings8
-    Alignment                    Left
-    BGcolor                      BLACK
-    Height                       26
-    FGcolor                      clRed
-    Font.Bold                    No
-    Font.CharSet                 ANSI
-    Font.Italic                  No
-    Font.Name                    '4D Font3 (8x12)'
-    Font.Opaque                  Yes
-    Font.Size                    12
-    Font.Strikethrough           No
-    Font.Underline               No
-    Left                         492
-    Strings                      99.99
-    StringsStyle                 Message
-    Top                          460
-    Width                        46
-    OnChanged                    ''
-end
-StaticText
-    Name                         Statictext11
-    Alias                        Statictext11
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      °C
-    Color                        0x00000D
-    Font.Color                   clWhite
-    Font.Effects                 []
-    Font.Name                    Consolas
-    Font.Size                    14
-    Font.Style                   []
-    Height                       22
-    Left                         536
-    Top                          454
-    Transparent                  Yes
-    Width                        20
-    WordWrap                     Yes
-end
-Strings
-    Name                         Strings9
-    Alias                        Strings9
-    Alignment                    Left
-    BGcolor                      BLACK
-    Height                       26
-    FGcolor                      clRed
-    Font.Bold                    No
-    Font.CharSet                 ANSI
-    Font.Italic                  No
-    Font.Name                    '4D Font3 (8x12)'
-    Font.Opaque                  Yes
-    Font.Size                    12
-    Font.Strikethrough           No
-    Font.Underline               No
-    Left                         690
-    Strings                      00.00\n
-    StringsStyle                 Message
-    Top                          458
-    Width                        46
-    OnChanged                    ''
-end
-StaticText
-    Name                         Statictext12
-    Alias                        Statictext12
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      °F
-    Color                        0x000200
-    Font.Color                   clWhite
-    Font.Effects                 []
-    Font.Name                    Consolas
-    Font.Size                    14
-    Font.Style                   []
-    Height                       22
-    Left                         736
-    Top                          452
-    Transparent                  Yes
-    Width                        20
-    WordWrap                     Yes
-end
-Form
-    Name                         Form3
-    Alias                        Form3
-    Bgtype                       Color
-    Color                        BLACK
-    Image                        (None)
-    Source.Height                0
-    Source.Left                  0
-    Source.Top                   0
-    Source.Width                 0
-    OnActivate                   ''
-    OnCreate                     ''
-    OnRepeat                     ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-StaticText
-    Name                         Statictext13
-    Alias                        Statictext13
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      'HUMEDAD / HUMIDITY'
-    Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Terminal
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       36
-    Left                         141
-    Top                          23
-    Transparent                  Yes
-    Width                        202
-    WordWrap                     Yes
-end
-StaticText
-    Name                         Statictext14
-    Alias                        Statictext14
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      TEMPERATURA
-    Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Terminal
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       18
-    Left                         456
-    Top                          20
-    Transparent                  Yes
-    Width                        122
-    WordWrap                     Yes
-end
-StaticText
-    Name                         Statictext15
-    Alias                        Statictext15
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      TEMPERATURE
-    Color                        BLACK
-    Font.Color                   WHITE
-    Font.Effects                 []
-    Font.Name                    Terminal
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       18
-    Left                         652
-    Top                          20
-    Transparent                  Yes
-    Width                        122
-    WordWrap                     Yes
-end
-Thermometer
-    Name                         Thermometer6
-    Alias                        Thermometer6
-    Caption                      Thermometer6
-    Color                        BLACK
-    ColorAfter                   0x000049
-    ColorBefore                  0x0A92F6
-    Direction                    Vertical
-    Font.Color                   0xFFED09
-    Font.Effects                 []
-    Font.Name                    Arial
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       439
-    Left                         614
-    Scale.Color                  clWhite
-    Scale.Decimals               0
-    Scale.Heightmax              14
-    Scale.Heightmin              8
-    Scale.Max                    90
-    Scale.Min                    -10
-    Scale.Offset                 50
-    Scale.Position               After
-    Scale.ScaleType              Linear
-    Scale.SmallStep              4
-    Scale.Step                   10
-    Scale.Visible                Yes
-    Setpoint.Bitmap              (None)
-    Setpoint.Color               0x1CECE2
-    Setpoint.Shape               Triangle
-    Setpoint.Value               70
-    Setpoint.Visible             Yes
-    ShowCaption                  No
-    Top                          11
-    Value.Bitmap                 (None)
-    Value.Color                  clAqua
-    Value.Shape                  Triangle
-    Value.Value                  0
-    Value.Visible                Yes
-    Width                        194
-    OnChanged                    ''
-end
-Thermometer
-    Name                         Thermometer7
-    Alias                        Thermometer7
-    Caption                      Thermometer7
-    Color                        BLACK
-    ColorAfter                   0x000044
-    ColorBefore                  clRed
-    Direction                    Vertical
-    Font.Color                   0xFFED09
-    Font.Effects                 []
-    Font.Name                    Arial
-    Font.Size                    16
-    Font.Style                   [Bold]
-    Height                       442
-    Left                         416
-    Scale.Color                  clWhite
-    Scale.Decimals               0
-    Scale.Heightmax              14
-    Scale.Heightmin              8
-    Scale.Max                    50
-    Scale.Min                    -20
-    Scale.Offset                 50
-    Scale.Position               After
-    Scale.ScaleType              Linear
-    Scale.SmallStep              1
-    Scale.Step                   10
-    Scale.Visible                Yes
-    Setpoint.Bitmap              (None)
-    Setpoint.Color               0x1CECE2
-    Setpoint.Shape               Triangle
-    Setpoint.Value               70
-    Setpoint.Visible             Yes
-    ShowCaption                  No
-    Top                          8
-    Value.Bitmap                 (None)
-    Value.Color                  clAqua
-    Value.Shape                  Triangle
-    Value.Value                  0
-    Value.Visible                Yes
-    Width                        194
-    OnChanged                    ''
-end
-AngularMeter
-    Name                         Angularmeter3
-    Alias                        Angularmeter3
-    Angle                        40
-    AngleOffset                  280
-    Caption                      Angularmeter3
-    CaptionXOffset               0
-    CaptionYOffset               0
-    CenterDotColor               BLACK
-    CenterDotWidth               2
-    Color                        BLACK
-    ColorZone1                   clRed
-    ColorZone2                   GREEN
-    ColorZone3                   clBlue
-    Decimals                     0
-    Font.Color                   clWhite
-    Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    8
-    Font.Style                   []
-    Height                       349
-    Labels                       10
-    LabelsFont.Color             clWhite
-    LabelsFont.Effects           []
-    LabelsFont.Name              Tahoma
-    LabelsFont.Size              8
-    LabelsFont.Style             []
-    LabelsOffset                 30
-    Left                         20
-    Maxvalue                     100
-    Minvalue                     0
-    NeedleBasewidth              8
-    NeedleColor                  clRed
-    NeedleLength                 -1
-    Percent1                     40
-    Percent2                     20
-    Radius                       -1
-    Spacing                      45
-    Ticks                        100
-    TicksColor                   clWhite
-    TicksEnlarge                 10
-    TicksMax                     14
-    TicksMin                     5
-    Top                          40
-    Width                        436
-    OnChanged                    ''
-end
-WinButton
-    Name                         Winbutton3
-    Alias                        Winbutton3
-    Appearance.Alignment         Center
-    Appearance.Layout            Left
-    Appearance.PictureAlignment  Right
-    Appearance.SimpleLayout      No
-    Appearance.Spacing           3
-    AutoSizeToPicture            No
-    Bevel                        Yes
-    BevelColor                   clWhite
-    Caption                      S4
-    Color                        0xF20FF1
-    Font.Color                   clWindowText
-    Font.Effects                 []
-    Font.Name                    Tahoma
-    Font.Size                    12
-    Font.Style                   []
-    Height                       55
-    Left                         32
-    Matrix                       -1
-    Momentary                    Yes
-    Picture                      (None)
-    StatusWhenOff.BGcolor        RED
-    StatusWhenOff.Caption        ''
-    StatusWhenOff.Glow           Yes
-    StatusWhenOff.Color          WHITE
-    StatusWhenOff.Effects        []
-    StatusWhenOff.Name           Tahoma
-    StatusWhenOff.Size           8
-    StatusWhenOff.Style          []
-    StatusWhenOff.Visible        Yes
-    StatusWhenOn.BGcolor         RED
-    StatusWhenOn.Caption         ''
-    StatusWhenOn.Glow            Yes
-    StatusWhenOn.Color           WHITE
-    StatusWhenOn.Effects         []
-    StatusWhenOn.Name            Tahoma
-    StatusWhenOn.Size            8
-    StatusWhenOn.Style           []
-    StatusWhenOn.Visible         Yes
-    Top                          400
-    Width                        66
-    OnChanged                    Form0Activate
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-LedDigits
-    Name                         Leddigits8
-    Alias                        Leddigits8
-    Color                        BLACK
-    Decimals                     1
-    Digits                       3
-    Height                       75
-    LeadingZero                  Yes
-    Left                         150
-    OutlineColor                 BLACK
-    Palette.High                 'Office 2007 (Luna)'
-    Palette.Low                  0x420000
-    Top                          388
-    Width                        177
-    OnChanged                    ''
-    OnTouchMoving                ''
-    OnTouchPressed               ''
-    OnTouchReleased              ''
-end
-Circle
-    Name                         Circle4
-    Alias                        Circle4
-    Color                        'Office 2007 (Luna)'
-    Filled                       No
-    Rad                          8
-    X                            372
-    Y                            440
-end
-Line
-    Name                         Line3
-    Alias                        Line3
-    Color                        'Office 2007 (Luna)'
-    Pattern                      Solid
-    X1                           342
-    X2                           380
-    Y1                           453
-    Y2                           402
-end
-Strings
-    Name                         Strings10
-    Alias                        Strings10
-    Alignment                    Left
-    BGcolor                      BLACK
-    Height                       26
-    FGcolor                      clRed
-    Font.Bold                    No
-    Font.CharSet                 ANSI
-    Font.Italic                  No
-    Font.Name                    '4D Font3 (8x12)'
-    Font.Opaque                  Yes
-    Font.Size                    12
-    Font.Strikethrough           No
-    Font.Underline               No
-    Left                         492
-    Strings                      99.99
-    StringsStyle                 Message
-    Top                          460
-    Width                        46
-    OnChanged                    ''
-end
-StaticText
-    Name                         Statictext16
-    Alias                        Statictext16
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      °C
-    Color                        0x00000D
-    Font.Color                   clWhite
-    Font.Effects                 []
-    Font.Name                    Consolas
-    Font.Size                    14
-    Font.Style                   []
-    Height                       22
-    Left                         536
-    Top                          454
-    Transparent                  Yes
-    Width                        20
-    WordWrap                     Yes
-end
-Strings
-    Name                         Strings11
-    Alias                        Strings11
-    Alignment                    Left
-    BGcolor                      BLACK
-    Height                       26
-    FGcolor                      clRed
-    Font.Bold                    No
-    Font.CharSet                 ANSI
-    Font.Italic                  No
-    Font.Name                    '4D Font3 (8x12)'
-    Font.Opaque                  Yes
-    Font.Size                    12
-    Font.Strikethrough           No
-    Font.Underline               No
-    Left                         690
-    Strings                      00.00\n
-    StringsStyle                 Message
-    Top                          458
-    Width                        46
-    OnChanged                    ''
-end
-StaticText
-    Name                         Statictext17
-    Alias                        Statictext17
-    Alignment                    Left
-    AutoSize                     Yes
-    Caption                      °F
-    Color                        0x000200
-    Font.Color                   clWhite
-    Font.Effects                 []
-    Font.Name                    Consolas
-    Font.Size                    14
-    Font.Style                   []
-    Height                       22
-    Left                         736
-    Top                          452
-    Transparent                  Yes
-    Width                        20
-    WordWrap                     Yes
 end

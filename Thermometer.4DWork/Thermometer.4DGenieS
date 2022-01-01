@@ -3,7 +3,7 @@
 //#constant OLDCOMPILE
 
 
-// generated 12/30/2021 6:38:04 PM
+// generated 1/1/2022 2:41:49 PM
 // uSDRequired:- 1   InternalRequired:- InternalRequired
 
 #MODE FLASHBANK_0
@@ -133,199 +133,47 @@
     WRITE_LABEL     12
 
 // End P1.inc
-    nObjects        128
-    nInputs         15
+    nObjects        24
+    nInputs         2
     nAniTimers      0
-    nKeyboards      1
-    nStrings        21
+    nStrings        6
 #END
-
-#CONST
-    Ofs_kb_Down
-    Ofs_kb_Mvt
-    Ofs_kb_State
-    Ofs_kb_Ign
-    Ofs_kb_Caps
-    Ofs_kb_Shift1
-    Ofs_kb_Shift2
-    Ofs_kb_Ctrl1
-    Ofs_kb_Ctrl2
-    Ofs_kb_Lock
-    Ofs_kb_Buttons
-    Ofs_kb_ShiftCaps
-#END
-
-#constant KbShiftBit        01
-#constant KbCapsBit         02
-#constant KbShiftCapsBits   03
-#constant KbCtrlBit         04
-
-func refreshstate(var iKB, var oKB)
-    var shifted ;
-    shifted := oKB[Ofs_kb_State] & KbShiftCapsBits ;
-    if (!shifted || (shifted == KbShiftCapsBits))
-        shifted := 0 ;
-        oKB[Ofs_kb_Caps] := 0 ;
-    else
-        shifted := 1 ;
-        oKB[Ofs_kb_Caps] := 2 ;
-    endif
-    setkeystate(iKB,shifted) ;
-    if (oKB[Ofs_kb_State] & KbCapsBit)
-        setkeystate(iKB + oKB[Ofs_kb_Lock],1) ;
-    endif
-    if ((oKB[Ofs_kb_State] & KbShiftBit) && (shifted))
-        setkeystate(iKB + oKB[Ofs_kb_Shift1],1) ;
-        setkeystate(iKB + oKB[Ofs_kb_Shift2],1) ;
-    endif
-    if (oKB[Ofs_kb_State] & KbCtrlBit)
-        setkeystate(iKB + oKB[Ofs_kb_Ctrl1],1) ;
-        setkeystate(iKB + oKB[Ofs_kb_Ctrl2],1) ;
-    endif
-endfunc
-
-func kbDown(var iKB, var oKB, var KBKeys, var key)
-    var keyval, rtn ;
-    oKB[Ofs_kb_Mvt] := 1 ;
-    oKB[Ofs_kb_Ign]  := 0 ;
-    if ((key == oKB[Ofs_kb_Shift1]) || (key == oKB[Ofs_kb_Shift2]))
-        if (oKB[Ofs_kb_State] & KbShiftBit)
-            oKB[Ofs_kb_State] &= ~KbShiftBit ;
-            oKB[Ofs_kb_Mvt] := 0 ;
-        else
-            oKB[Ofs_kb_State] |= KbShiftBit ;
-        endif
-        refreshstate(iKB, oKB) ;
-        oKB[Ofs_kb_Ign] := 1 ;
-    else if ((key == oKB[Ofs_kb_Ctrl1]) || (key == oKB[Ofs_kb_Ctrl2]))
-        if (oKB[Ofs_kb_State] & KbCtrlBit)
-            oKB[Ofs_kb_State] &= ~KbCtrlBit ;
-            oKB[Ofs_kb_Mvt] := 0 ;
-        else
-            oKB[Ofs_kb_State] |= KbCtrlBit ;
-        endif
-        setkeystate(iKB+oKB[Ofs_kb_Ctrl1],oKB[Ofs_kb_Mvt]) ;
-        key := oKB[Ofs_kb_Ctrl2] ;
-        oKB[Ofs_kb_Ign] := 1 ;
-    else if (key == oKB[Ofs_kb_Lock])
-        if (oKB[Ofs_kb_State] & KbCapsBit)
-            oKB[Ofs_kb_State] &= ~KbCapsBit ;
-            oKB[Ofs_kb_Mvt] := 0 ;
-        else
-            oKB[Ofs_kb_State] |= KbCapsBit ;
-        endif
-        refreshstate(iKB, oKB) ;
-        oKB[Ofs_kb_Ign] := 1 ;
-    endif
-
-    if (!oKB[Ofs_kb_Ign])
-        if (oKB[Ofs_kb_ShiftCaps])
-            keyval := (oKB[Ofs_kb_State] & KbShiftCapsBits) * oKB[Ofs_kb_Buttons] - 1 ;
-        else if (((oKB[Ofs_kb_State] & KbShiftCapsBits) == 0) || ((oKB[Ofs_kb_State] & KbShiftCapsBits) == KbShiftCapsBits))
-                keyval := - 1 ;
-            else
-                keyval := oKB[Ofs_kb_Buttons] - 1 ;
-        endif
-        keyval := KBKeys[key+keyval] ;
-        if (oKB[Ofs_kb_State] & KbCtrlBit) keyval &= 0x9F ;
-	rtn := rKeyboardRoutines[ActiveKeyboard] ;
-        rtn(REPORT_EVENT, tKeyboard, ActiveKeyboard, keyval & 0xff) ;
-        setkeystate(iKB+key,oKB[Ofs_kb_Mvt]+oKB[Ofs_kb_Caps]) ;
-    endif
-    oKB[Ofs_kb_Down] := key ;
-endfunc
-
-func setkeystate(var key, var idx)
-    img_SetWord(hndl, key,IMAGE_INDEX, idx);
-    img_Show(hndl,key) ;
-endfunc
-
-func kbUp(var iKB, var oKB)
-    if (!oKB[Ofs_kb_Ign])
-        setkeystate(iKB + oKB[Ofs_kb_Down],oKB[Ofs_kb_Caps]) ;
-        if (oKB[Ofs_kb_State] & KbShiftBit)
-            oKB[Ofs_kb_State] &= ~KbShiftBit ;
-            refreshstate(iKB, oKB) ;
-        endif
-        if (oKB[Ofs_kb_State] & KbCtrlBit)
-            oKB[Ofs_kb_State] &= ~KbCtrlBit ;
-            setkeystate(iKB + oKB[Ofs_kb_Ctrl1],0) ;
-            setkeystate(iKB + oKB[Ofs_kb_Ctrl2],0) ;
-        endif
-        oKB[Ofs_kb_Down] := -1 ;
-    endif
-endfunc
 
 #DATA
-    word FormStartIndex 0, 25, 36, 47, 58
-    word FormEndIndex 25, 36, 47, 58, 128
-    word InputControls -1, -1, -1, -1, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 44, 88, -1, -1, -1, -1, -1, -1, -1, 132, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 176, -1, -1, -1, -1, -1, -1, -1, -1, 220, -1, -1, -1, -1, 264, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 264, -1, 286
-    word InputData tWinButton, 1, -1, -1, -1, -1, -1, -1, 0, 22, 2,
-                OT_ACTIVATE, 10, 1, 0, 18, 0, 0, 0, 0, 0, 0,
-                tUserButton, 0, 0, -1, -1, -1, -1, -1, 0, 66, 2,
-                OT_REPORT, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                tUserButton, 0, 0, -1, -1, -1, -1, -1, 0, 110, 4,
-                OT_ACTIVATE, 10, 4, 0, 18, 0, 0, 0, 0, 0, 0,
-                tWinButton, 1, -1, -1, -1, -1, -1, -1, 0, 154, 4,
-                OT_ACTIVATE, 10, 2, 0, 18, 0, 0, 0, 0, 0, 0,
-                tWinButton, 1, -1, -1, -1, -1, -1, -1, 0, 198, 6,
-                OT_ACTIVATE, 10, 3, 0, 18, 0, 0, 0, 0, 0, 0,
-                tWinButton, 1, -1, -1, -1, -1, -1, -1, 0, 242, 8,
-                OT_ACTIVATE, 10, 0, 0, 18, 0, 0, 0, 0, 0, 0,
-                t4Dbutton, 1, -1, -1, -1, -1, -1, -1, 0, 0, 4,
-                t4Dbutton, 1, -1, -1, -1, -1, -1, -1, 0, 308, 2,
-                OT_ACTIVATE, 10, 0, 0, 18, 0, 0, 0, 0, 0, 0
+    word FormStartIndex 0
+    word FormEndIndex 24
+    word InputControls -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 22
+    word InputData tUserButton, 0, 0, -1, -1, -1, -1, -1, 0, 0, 2,
+                tUserButton, 0, 0, -1, -1, -1, -1, -1, 0, 0, 4
     word iStrings0  Strings0StartH, Strings0StartL, Strings0Size, 7, 410, 266, 478, WHITE, BLACK, 0, 1, 1, 0 
     word iStrings1  Strings1StartH, Strings1StartL, Strings1Size, 272, 410, 333, 465, WHITE, BLACK, 0, 1, 1, 0 
     word iStrings2  Strings2StartH, Strings2StartL, Strings2Size, 337, 410, 624, 473, WHITE, BLACK, 0, 1, 1, 0 
     word iStrings3  Strings3StartH, Strings3StartL, Strings3Size, 629, 412, 743, 467, WHITE, BLACK, 0, 1, 1, 0 
-    word iStrings4  Strings4StartH, Strings4StartL, Strings4Size, 576, 192, 705, 262, WHITE, BLACK, 0, 1, 1, 0 
+    word iStrings4  Strings4StartH, Strings4StartL, Strings4Size, 576, 192, 740, 262, WHITE, BLACK, 0, 1, 1, 0 
     word iStrings5  Strings5StartH, Strings5StartL, Strings5Size, 12, 344, 205, 403, WHITE, BLACK, 0, 1, 1, 0 
-    word iStrings6  Strings6StartH, Strings6StartL, Strings6Size, 492, 460, 537, 485, 0xF800, BLACK, 0, 1, 1, 1 
-    word iStrings7  Strings7StartH, Strings7StartL, Strings7Size, 690, 458, 735, 483, 0xF800, BLACK, 0, 1, 1, 1 
-    word iStrings8  Strings8StartH, Strings8StartL, Strings8Size, 492, 460, 537, 485, 0xF800, BLACK, 0, 1, 1, 2 
-    word iStrings9  Strings9StartH, Strings9StartL, Strings9Size, 690, 458, 735, 483, 0xF800, BLACK, 0, 1, 1, 2 
-    word iStrings10  Strings10StartH, Strings10StartL, Strings10Size, 492, 460, 537, 485, 0xF800, BLACK, 0, 1, 1, 3 
-    word iStrings11  Strings11StartH, Strings11StartL, Strings11Size, 690, 458, 735, 483, 0xF800, BLACK, 0, 1, 1, 3 
-    word iStrings12  Strings12StartH, Strings12StartL, Strings12Size, 136, 16, 260, 64, WHITE, 0xFFFF, 0, 1, 1, 4 
-    word iStrings13  Strings13StartH, Strings13StartL, Strings13Size, 136, 84, 260, 132, WHITE, 0xFFFF, 0, 1, 1, 4 
-    word iStrings14  Strings14StartH, Strings14StartL, Strings14Size, 136, 151, 260, 199, WHITE, 0xFFFF, 0, 1, 1, 4 
-
-
-
-    word iStrings18  Strings18StartH, Strings18StartL, Strings18Size, 409, 18, 533, 66, WHITE, 0xFFFF, 0, 1, 1, 4 
-    word iStrings19  Strings19StartH, Strings19StartL, Strings19Size, 409, 86, 533, 134, WHITE, 0xFFFF, 0, 1, 1, 4 
-    word iStrings20  Strings20StartH, Strings20StartL, Strings20Size, 409, 152, 533, 200, WHITE, 0xFFFF, 0, 1, 1, 4 
     word oDipSwitchs 0
-    word oWinButtons 4, iWinbutton0, iWinbutton1, iWinbutton2, iWinbutton3
-    word oAngularmeters 4, iAngularmeter0, iAngularmeter1, iAngularmeter2, iAngularmeter3
-    word oForms 5, -1, -1, -1, -1, -1
+    word oAngularmeters 1, iAngularmeter0
+    word oForms 1, -1
     word oGauges 1, iGauge0
-    word oKeyboards 1, iKeyboard0
     word oLeds 1, iLed0
-    word oLeddigitss 9, iLeddigits0, iLeddigits1, iLeddigits2, iLeddigits3, iLeddigits4, iLeddigits5, iLeddigits6, iLeddigits7, iLeddigits8
-    word oStringss 21, iStrings0, iStrings1, iStrings2, iStrings3, iStrings4, iStrings5, iStrings6, iStrings7, iStrings8, iStrings9, iStrings10, iStrings11, iStrings12, iStrings13, iStrings14, -1, -1, -1, iStrings18, iStrings19, iStrings20
-    word oThermometers 8, iThermometer0, iThermometer1, iThermometer2, iThermometer3, iThermometer4, iThermometer5, iThermometer6, iThermometer7
+    word oLeddigitss 6, iLeddigits0, iLeddigits1, iLeddigits2, iLeddigits3, iLeddigits4, iLeddigits5
+    word oStringss 6, iStrings0, iStrings1, iStrings2, iStrings3, iStrings4, iStrings5
+    word oThermometers 2, iThermometer0, iThermometer1
     word oUserleds 2, iUserled0, iUserled1
-    word oStaticTexts 27, iStatictext0, iStatictext1, iStatictext2, iStatictext3, iStatictext4, iStatictext5, iStatictext6, iStatictext7, iStatictext8, iStatictext9, iStatictext10, iStatictext11, iStatictext12, iStatictext13, iStatictext14, iStatictext15, iStatictext16, iStatictext17, iStatictext18, iStatictext19, iStatictext20, iStatictext21, -1, -1, iStatictext24, iStatictext25, iStatictext26
-    word o4Dbuttons 2, i4Dbutton0, i4Dbutton1
+    word oStaticTexts 3, iStatictext0, iStatictext1, iStatictext2
     word oUserButtons 2, iUserbutton0, iUserbutton1
-    word FormBGcolors 0x0000, 0x0000, 0x0000, 0x0000, 0x0000
-    word kKeyboardKeystrokes iKeyboard0keystrokes
-    word rKeyboardRoutines SendReport
+    word FormBGcolors 0x0000
+    word kKeyboardKeystrokes -1
+    word rKeyboardRoutines -1
     word oLedDigitsn 64, 2, 1, 61, 0,
                 263, 3, 2, 51, 0,
                 478, 3, 2, 51, 0,
                 585, 2, 1, 50, 0,
                 702, 2, 1, 50, 0,
-                716, 2, 1, 22, 0,
-                150, 3, 2, 59, 0,
-                150, 3, 2, 59, 0,
-                150, 3, 2, 59, 0
+                716, 2, 1, 22, 0
 #END
 
-var stringsCV[21] := [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], hstrings ;
-var dKeyboard[1], ActiveKeyboard ;
+var stringsCV[6] := [0, 0, 0, 0, 0, 0], hstrings ;
 // Start P2.inc
 var oObjects[MaxTotObjects+1] ;                 // address of objects
 var CurrentForm, oldn, ImageTouched ;
@@ -397,14 +245,8 @@ func WriteObject(var ObjectType, var ObjectIdx, var NewVal)
         Objects := *(oObjects+ObjectType)+ObjectIdx*2+2 ;
         i := *(Objects) ;
         switch (ObjectType)
-            case tWinButton :
-                j := InputControls[oWinButtons[ObjectIdx+1]] ;
-                break ;
             case tUserButton :
                 j := InputControls[oUserButtons[ObjectIdx+1]] ;
-                break ;
-            case t4Dbutton :
-                j := InputControls[o4Dbuttons[ObjectIdx+1]] ;
                 break ;
             default : j := -1 ;
         endswitch
@@ -443,16 +285,8 @@ func TurnOffButtons(var group)
         k := j*IPDatasize ;
         if (*(InputData+k+Ofs_IPD_P2) == group)
             l := -1 ;
-             if (*(InputData+k) == t4Dbutton)
-                l := o4Dbuttons[*(InputData+k+Ofs_IPD_OBJVIDX)/2] ;
-                img_SetWord(hndl, l, IMAGE_INDEX, 0);
-                img_Show(hndl, l);      // only shows on current form
-            else if (*(InputData+k) == tWinButton)
-                l := oWinButtons[*(InputData+k+Ofs_IPD_OBJVIDX)/2] ;
-                img_SetWord(hndl, l, IMAGE_INDEX, 0);
-                img_Show(hndl, l);      // only shows on current form
 
-            else if (*(InputData+k) == tUserButton)
+             if (*(InputData+k) == tUserButton)
                 l := oUserButtons[*(InputData+k+Ofs_IPD_OBJVIDX)/2] ;
                 img_SetWord(hndl, l, IMAGE_INDEX, img_GetWord(hndl, l, IMAGE_INDEX) & 0xfffc );
                 img_Show(hndl, l);      // only shows on current form
@@ -610,18 +444,6 @@ func DoGFXObjects()
             gfx_CircleFilled(692, 37, 5, DEEPSKYBLUE) ;
             gfx_CircleFilled(692, 62, 5, DEEPSKYBLUE) ;
         break ;
-        case 1:
-            gfx_Circle(372, 440, 8, 0xDF5F) ;
-            gfx_Line(342, 453, 380, 402, 0xDF5F) ;
-        break ;
-        case 2:
-            gfx_Line(342, 453, 380, 402, 0xDF5F) ;
-            gfx_Circle(372, 440, 8, 0xDF5F) ;
-        break ;
-        case 3:
-            gfx_Circle(372, 440, 8, 0xDF5F) ;
-            gfx_Line(342, 453, 380, 402, 0xDF5F) ;
-        break ;
     endswitch
 endfunc
 
@@ -629,7 +451,6 @@ endfunc
 func main()
     var comTX[50], cmdi, i, j, TouchStatus ;
 
-    ActiveKeyboard := -1 ;
 
     gfx_ScreenMode(LANDSCAPE_R) ;
 
@@ -662,14 +483,14 @@ func main()
     oObjects[tRotarySwitch] := oDipSwitchs ; // dummy as no object there
     oObjects[tGSlider] := oDipSwitchs ; // dummy as no object there
     oObjects[tTrackbar] := oDipSwitchs ; // dummy as no object there
-    oObjects[tWinButton] := oWinButtons ;
+    oObjects[tWinButton] := oDipSwitchs ; // dummy as no object there
     oObjects[tAngularmeter] := oAngularmeters ;
     oObjects[tCoolgauge] := oDipSwitchs ; // dummy as no object there
     oObjects[tCustomdigits] := oDipSwitchs ; // dummy as no object there
     oObjects[tForm] := oForms ;
     oObjects[tGauge] := oGauges ;
     oObjects[tImage] := oDipSwitchs ; // dummy as no object there
-    oObjects[tKeyboard] := oKeyboards ;
+    oObjects[tKeyboard] := oDipSwitchs ; // dummy as no object there
     oObjects[tLed] := oLeds ;
     oObjects[tLeddigits] := oLeddigitss ;
     oObjects[tMeter] := oDipSwitchs ; // dummy as no object there
@@ -685,7 +506,7 @@ func main()
     oObjects[tUserImages] := oDipSwitchs ; // dummy as no object there
     oObjects[tPinOutput] := oDipSwitchs ; // dummy as no object there
     oObjects[tPinInput] := oDipSwitchs ; // dummy as no object there
-    oObjects[t4Dbutton] := o4Dbuttons ;
+    oObjects[t4Dbutton] := oDipSwitchs ; // dummy as no object there
     oObjects[tAniButton] := oDipSwitchs ; // dummy as no object there
     oObjects[tColorPicker] := oDipSwitchs ; // dummy as no object there
     oObjects[tUserButton] := oUserButtons ;
@@ -694,20 +515,7 @@ func main()
     hFonts[2] := file_LoadImageControl("THERMO~1.d03", "THERMO~1.g03", 1)  ;
     hFonts[4] := file_LoadImageControl("THERMO~1.d05", "THERMO~1.g05", 1)  ;
     hFonts[5] := file_LoadImageControl("THERMO~1.d06", "THERMO~1.g06", 1)  ;
-    hFonts[6] := FONT3 ;
-    hFonts[7] := FONT3 ;
-    hFonts[8] := FONT3 ;
-    hFonts[9] := FONT3 ;
-    hFonts[10] := FONT3 ;
-    hFonts[11] := FONT3 ;
-    hFonts[12] := FONT3 ;
-    hFonts[13] := FONT3 ;
-    hFonts[14] := FONT3 ;
-    hFonts[18] := FONT3 ;
-    hFonts[19] := FONT3 ;
-    hFonts[20] := FONT3 ;
     hFonts[3] := hFonts[1] ;
-    dKeyboard[0] := oKeyboard0 ;
 // Start P4.inc
 
     hstrings := file_Open("THERMO~1.txf", 'r') ; // Open handle to access uSD strings, uncomment if required
@@ -735,13 +543,6 @@ func main()
     next
 
 
-    for (i := 0; i < nKeyboards; i++) // for each kb key, set tag to -1
-        if (oKeyboards[i+1] != -1)               // if keyboard exists
-            for(ImageTouched := oKeyboards[i+1]+1; ImageTouched <= oKeyboards[i+1]+*(dKeyboard[i] + Ofs_kb_Buttons); ImageTouched++)
-                img_SetWord(hndl, ImageTouched, IMAGE_TAG, -1);
-            next
-        endif
-    next
     // display initial form
     CurrentForm := -1 ;
 // End P4.inc
@@ -867,28 +668,11 @@ func main()
                 TouchState := Ofs_IPD_RELEASE ;
             endif
             if (ImageTouched >= 0)
-                // if touch released then find a keyboard down, if one then release it
-                if ((TouchStatus == TOUCH_RELEASED) && (ActiveKeyboard != -1))
-                    kbUp(oKeyboards[ActiveKeyboard+1], dKeyboard[ActiveKeyboard]) ;
-                    ActiveKeyboard := -1 ;
-                else
-                    i := 0 ;
-                    while ((i < nKeyboards) && ((ImageTouched <= oKeyboards[i+1]) || (ImageTouched > oKeyboards[i+1] + *(dKeyboard[i]+Ofs_kb_Buttons))))
-                        i++ ;
-                    wend
-                    if (i < nKeyboards)
-                        if (TouchStatus == TOUCH_PRESSED)
-                            ActiveKeyboard := i ;
-                            kbDown(oKeyboards[ActiveKeyboard+1], dKeyboard[ActiveKeyboard], kKeyboardKeystrokes[ActiveKeyboard], ImageTouched-oKeyboards[ActiveKeyboard+1]) ;
-                        endif
-                    else
                         CurInputData := InputControls[ImageTouched] + InputData;
                         GObjectType := *(CurInputData) ;
                         i := GObjectType ;
                         if (GObjectType >= t4Dbutton) i -= 23 ; // adjust to ensure next in gosub
                         gosub (i), (cDipswitch, cKnob, cRockerswitch, cRotaryswitch, cSlider, cTrackbar, cWinbutton, c4DButton, cAniButton, cColorPicker, cUserButton) ;
-                    endif
-                endif
             endif
         endif
  //       if ((n != -1) && (oldn == -1)) oldn := n ;    // save what we touched in case we move off it

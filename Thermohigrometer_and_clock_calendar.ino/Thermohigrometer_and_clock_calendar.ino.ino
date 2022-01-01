@@ -40,7 +40,7 @@ char *zellersAlgorithm(int _day, int _month, int _year){
    return _weekday[w];
 }
 
-int flag_day = 0;
+//int flag_day = 0;
 int flag_hour = 0;
 int RTC_flag = 0;
 
@@ -99,32 +99,43 @@ void setup()
         days = tm.Day;
         months = tm.Month;
         years = tmYearToCalendar(tm.Year); 
-        flag_day = tm.Day;
         flag_hour = tm.Hour;
+
+        rtc.setSeconds(seconds);
+        rtc.setMinutes(minutes);
+        rtc.setHours(hours);
+
+        rtc.setDay(days);
+        rtc.setMonth(months);
+        rtc.setYear(years);
     }
     else
     {
       genie.WriteObject(GENIE_OBJ_LED, 0, 0);
-      rtc.setHours(19);
-      rtc.setMinutes(0);
+      
       rtc.setSeconds(0);
+      rtc.setMinutes(40);
+      rtc.setHours(15);
 
-      flag_day = 30;
-      flag_hour = 19;
-      rtc.setDay(30);
-      rtc.setMonth(12);
-      rtc.setYear(2021);
+      rtc.setDay(1);
+      rtc.setMonth(1);
+      rtc.setYear(2010);
 
-      hours = rtc.getHours();
-      minutes = rtc.getMinutes();
       seconds = rtc.getSeconds();
+      minutes = rtc.getMinutes();
+      hours = rtc.getHours();
+      
       days = rtc.getDay();
       months = rtc.getMonth();
       years = rtc.getYear();
+
+      //flag_day = rtc.getDay();
+      flag_hour = rtc.getHours();
+      
       RTC_flag == 0;
     }
 
-    //Write time in hours
+    //Write times of day
       if(RTC_flag == 1)
       {
         if(hours < 12 && hours >= 5)
@@ -219,6 +230,7 @@ void loop()
     }
 
     tmElements_t tm;
+    
     if( RTC.read(tm))
     {
         genie.WriteObject(GENIE_OBJ_LED, 0, 1);
@@ -229,6 +241,14 @@ void loop()
         days = tm.Day;
         months = tm.Month;
         years = tmYearToCalendar(tm.Year);
+
+        rtc.setSeconds(seconds);
+        rtc.setMinutes(minutes);
+        rtc.setHours(hours);
+
+        rtc.setDay(days);
+        rtc.setMonth(months);
+        rtc.setYear(years);
     }
     else
     {
@@ -257,12 +277,11 @@ void loop()
     //Write time in minutes
     genie.WriteObject(GENIE_OBJ_LED_DIGITS, 4, minutes);
 
+    //Write time in hours
+    genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, hours);
   
     if(flag_hour == hours) 
     {
-      //Write time in hours
-      genie.WriteObject(GENIE_OBJ_LED_DIGITS, 3, hours);
-
       if(RTC_flag == 1)
       {
         if(hours < 12 && hours >= 5)
@@ -274,6 +293,7 @@ void loop()
         }else{
           genie.WriteStr( 4, "Buenas noches \nAxelintheloop!");
         }
+        
       }
       else{
         if(hours < 12 && hours >= 5)
@@ -286,11 +306,7 @@ void loop()
           genie.WriteStr( 4, "Buenas noches \nAxelintheloop");
         }
       }
-      flag_hour++;
-    }
 
-    if(flag_day == days)
-    {
       //Write weekday
       genie.WriteStr(0, zellersAlgorithm(days, months, years));
   
@@ -303,7 +319,13 @@ void loop()
       //Write time in years
       genie.WriteStr( 3, years);
 
-      flag_day++;
+      if(hours == 23 && hours != 0)
+      {
+        flag_hour = 0;
+      }
+      else{
+        flag_hour++;
+      }
     }
 
     //Write time in seconds
